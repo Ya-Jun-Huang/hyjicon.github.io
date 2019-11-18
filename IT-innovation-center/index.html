@@ -7,24 +7,25 @@
     <meta content="第一网校-IT创新服务中心" name="keywords">
     <meta content="第一网校-IT创新服务中心" name="description">
     <title>第一网校 - IT创新服务中心</title>
-    <!-- Favicons -->
-    <link href="/view/img/logo.png" rel="icon">
-    <link href="/Dashio/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <!-- Bootstrap core CSS -->
-    <link href="./Dashio/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!--external css-->
-    <link href="/Dashio/lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-    <link href="/Dashio/lib/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css"/>
-    <link href="/Dashio/lib/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="/Dashio/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="/Dashio/lib/bootstrap-timepicker/compiled/timepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="/Dashio/lib/bootstrap-datetimepicker/datertimepicker.css" rel="stylesheet" type="text/css"/>
-    <!-- Custom styles for this template -->
-    <link href="/Dashio/css/style.css" rel="stylesheet">
-    <link href="/Dashio/css/style-responsive.css" rel="stylesheet">
     <!--钉钉接口-->
     <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
-    <script src="/vue/dd.js"></script>
+    <!-- Favicons -->
+    <link href="https://hyjicon.github.io/IT-innovation-center/view/img/logo.png" rel="icon">
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Bootstrap core CSS -->
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--external css-->
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css"/>
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-timepicker/compiled/timepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-datetimepicker/datertimepicker.css" rel="stylesheet" type="text/css"/>
+    <!-- Custom styles for this template -->
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/css/style.css" rel="stylesheet">
+    <link href="https://hyjicon.github.io/IT-innovation-center/Dashio/css/style-responsive.css" rel="stylesheet">
+
+    <script src="/script/dd.js"></script>
 
 </head>
 
@@ -80,10 +81,10 @@
             <ul class="sidebar-menu" id="nav-accordion">
                 <p class="centered">
                     <span v-if="user == false">
-                        <img class="img-circle" src="view/img/logo.jpg" width="80">
+                        <img class="img-circle" src="https://hyjicon.github.io/IT-innovation-center/view/img/logo.jpg" width="80">
                     </span>
                     <span v-if="user != false">
-                        <img class="img-circle" src="view/img/logo.jpg" v-if="user.loginMethod != 'dd'" width="80">
+                        <img class="img-circle" src="https://hyjicon.github.io/IT-innovation-center/view/img/logo.jpg" v-if="user.loginMethod != 'dd'" width="80">
                         <img class="img-circle" v-bind:src="user.ddUser.avatar" v-if="user.loginMethod == 'dd'"
                              width="80">
                     </span>
@@ -205,39 +206,36 @@
 </section>
 
 <!-- jquery和bootstrap -->
-<script src="/Dashio/lib/jquery/jquery.min.js"></script>
-<script src="/Dashio/lib/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/jquery/jquery.min.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap/js/bootstrap.min.js"></script>
 <!--加载vue依赖-->
-<script src="/Dashio/lib/vue/vue.js"></script>
-<script src="/Dashio/lib/vue/axios.min.js"></script>
-<script src="/Dashio/lib/vue/vue-router.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/vue/vue.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/vue/axios.min.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/vue/vue-router.js"></script>
 <!--加载必须的js-->
-<script src="/vue/require.js"></script>
+<script src="/script/require.js"></script>
 <!--加载滑动事件-->
-<script src="/vue/slider.js"></script>
+<script src="/script/slider.js"></script>
 <!--加载vue-->
-<script src="/vue/vueApp.js"></script>
-
+<script src="/script/vueApp.js"></script>
 
 <!-- 其他脚本放在vue后面加载 避免被vue影响 -->
-<script class="include" src="/Dashio/lib/jquery.dcjqaccordion.2.7.js" type="text/javascript"></script>
-<script src="/Dashio/lib/jquery.scrollTo.min.js"></script>
-<script src="/Dashio/lib/jquery.nicescroll.js" type="text/javascript"></script>
+<script class="include" src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/jquery.dcjqaccordion.2.7.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/jquery.scrollTo.min.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/jquery.nicescroll.js" type="text/javascript"></script>
 <!--本页的其他脚本-->
-<script src="/Dashio/lib/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/Dashio/lib/bootstrap-fileupload/bootstrap-fileupload.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-daterangepicker/date.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
-<script src="/Dashio/lib/bootstrap-timepicker/js/bootstrap-timepicker.js" type="text/javascript"></script>
-<script src="/Dashio/lib/advanced-form-components.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-fileupload/bootstrap-fileupload.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-daterangepicker/date.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/bootstrap-timepicker/js/bootstrap-timepicker.js" type="text/javascript"></script>
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/advanced-form-components.js"></script>
 <!--common script for all pages-->
-<script src="/Dashio/lib/common-scripts.js"></script>
-
+<script src="https://hyjicon.github.io/IT-innovation-center/Dashio/lib/common-scripts.js"></script>
 <!--加载响应事件-->
-<script src="/vue/adapt.js"></script>
+<script src="/script/adapt.js"></script>
 </body>
 </html>

@@ -15,12 +15,6 @@ dd.ready(function () {
     });
     //出错
     dd.error(function (error) {
-        /**
-         {
-           errorMessage:"错误信息",// errorMessage 信息会展示出钉钉服务端生成签名使用的参数，请和您生成签名的参数作对比，找出错误的参数
-           errorCode: "错误码"
-        }
-         **/
         alert('dd error: ' + JSON.stringify(error));
     });
 });
