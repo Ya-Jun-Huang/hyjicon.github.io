@@ -1,0 +1,125 @@
+<section class="wrapper">
+    <h3><i class="fa fa-angle-right"></i>预约办卡</h3>
+    <!-- BASIC FORM ELELEMNTS -->
+    <div class="row mt">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <h4 class="title">预约办卡需求单</h4>
+            <div id="message"></div>
+            <form class="contact-form php-mail-form" id="applyFrom" method="POST" role="form">
+
+                <div class="form-group">
+                    <input class="form-control" data-msg="Please enter at least 4 chars"
+                           data-rule="minlen:4" id="applyPersonName" name="applyPersonName" placeholder="请填写姓名"
+                           type="name">
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" data-msg="Please enter a valid email"
+                           data-rule="email" id="applyPhoneNumber" name="applyPhoneNumber" placeholder="请填写手机号码"
+                           type="email">
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" data-msg="Please enter a valid email"
+                           data-rule="email" id="applyPersonIdcard" name="applyPersonIdcard" placeholder="请填写身份证号"
+                           type="email">
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" data-msg="Please enter at least 8 chars of subject" data-rule="minlen:4"
+                           id = "applyCardNumber" name="applyCardNumber"
+                           placeholder="请填写需求手机卡数量" type="text">
+                    <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" data-msg="Please write something for us" data-rule="required" id="applyRemark"
+                              name="applyRemark"
+                              placeholder="请填写办理原因" rows="5"
+                              style="width: 550px; height: 143px;"></textarea>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="loading"></div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                <div class="form-send">
+                    <span class="btn btn-large btn-primary" onclick="upload()" type="submit">发送需求</span>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+<!--            <h4 class="title">申请须知</h4>-->
+<!--            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the-->
+<!--                industry"s standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing-->
+<!--                and typesetting industry.</p>-->
+<!--            <ul class="contact_details">-->
+<!--                <li><i class="fa fa-envelope-o"></i> info@yoursite.com</li>-->
+<!--                <li><i class="fa fa-phone-square"></i> +34 5565 6555</li>-->
+<!--                <li><i class="fa fa-home"></i> Some Fine Address, 887, Madrid, Spain.</li>-->
+<!--            </ul>-->
+<!--            &lt;!&ndash; contact_details &ndash;&gt;-->
+        </div>
+    </div>
+    <!-- /row -->
+
+
+    <!-- /row -->
+</section>
+
+
+<script>
+    /**
+     * 提交申请
+     */
+    function upload() {
+
+        if (document.getElementById('applyPersonName').value == null || document.getElementById('applyPersonName').value == "") {
+            alert("请填写姓名");
+            document.getElementById('applyPersonName').focus();
+            return;
+        }
+
+        if (document.getElementById('applyPhoneNumber').value == null || document.getElementById('applyPhoneNumber').value == "") {
+            alert("请填写手机号");
+            document.getElementById('applyPhoneNumber').focus();
+            return;
+        }
+
+        if (document.getElementById('applyPersonIdcard').value == null || document.getElementById('applyPersonIdcard').value == "") {
+            alert("请填写身份证号");
+            document.getElementById('applyPersonIdcard').focus();
+            return;
+        }
+
+        var applyCardNumber = document.getElementById('applyCardNumber');
+        if (applyCardNumber.value == null || applyCardNumber.value == "") {
+            alert("请填写需要的数量");
+            document.getElementById('applyCardNumber').focus();
+            return;
+        }
+
+        if (isNaN(applyCardNumber.value) || parseInt(applyCardNumber.value) < 1) {
+            alert("需要的数量只能是大于等于1的整数");
+            document.getElementById('applyCardNumber').focus();
+            return;
+
+        }
+
+        if (document.getElementById('applyRemark').value == null || document.getElementById('applyRemark').value == "") {
+            alert("请填写理由");
+            document.getElementById('applyRemark').focus();
+            return;
+        }
+
+        //
+        var data = $("#applyFrom").serialize();
+
+        //提交请求
+        axios.post("/cardApply/user/apply/applyFor", data).then(outMassage).catch(serverError);
+    }
+
+</script>

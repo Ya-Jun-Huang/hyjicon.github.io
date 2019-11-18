@@ -1,0 +1,39 @@
+<section class="wrapper" id="userEvent">
+    <!--ADVANCED FILE INPUT-->
+    <div class="row mt" style="margin-top: 2px">
+        <div class="showback">
+            <h4><i class="fa fa-angle-right"></i>我的事件</h4>
+
+            <div v-for="event in events" class="alert alert-warning alert-dismissable">
+                <button aria-hidden="true" class="close" data-dismiss="alert" type="button" v-on:click="del(event.eventId)">×</button>
+                <strong class="title">{{event.eventName}}</strong> <br>
+                {{event.eventContent}} <br>
+                <div class="text-right">
+                    <span v-if="!(event.enentUrl == '' || event.enentUrl == '#' || event.enentUrl == null)" class="btn-link" v-on:click="getPage(event.enentUrl)">去看看</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+
+    var page = new Vue({
+        el:"#userEvent",
+
+        data: {
+            events:app.events,
+        },
+        methods: {
+            toDate:window.toDate,
+            getPage:window.getPage,
+            del:function (id) {
+                axios.delete("/event/user/del/"+id).then(function (value) { outMassage
+                    app.getEvents();
+                }).catch(serverError);
+            }
+        }
+    })
+
+</script>

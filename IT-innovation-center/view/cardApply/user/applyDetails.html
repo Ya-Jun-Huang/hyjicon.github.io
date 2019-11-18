@@ -1,0 +1,194 @@
+<section class="wrapper" id="applyDetails">
+    <div class="col-lg-12 mt">
+        <span id="detailsId" style="display: none" th:text="${cApplyCard.applyId}"></span>
+        <div class="row content-panel">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="invoice-body">
+                    <div class="row">
+                        <div>
+                            <div class="pull-left">
+                                <h1>办卡预约单</h1>
+                            </div>
+                            <div class="pull-right">
+                                <h2 th:text="${cApplyCard.status}"></h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <strong title="Phone">预约人：</strong> <span
+                                th:text="${cApplyCard.applyPersonName}"></span><br>
+                            <h4>详细信息</h4>
+                            <address>
+                                <strong>手机号码.</strong><br>
+                                <div style="width: 166px;display: inline-block"
+                                     th:text="${cApplyCard.applyPhoneNumber}">
+                                </div>
+                                <br>
+                                <strong>身份证号.</strong><br>
+                                <div style="width: 166px;display: inline-block"
+                                     th:text="${cApplyCard.applyPersonIdcard}">
+                                </div>
+                                <br>
+                                <strong>办理原因.</strong><br>
+                                <div style="width: 166px;display: inline-block" th:text="${cApplyCard.applyRemark}">
+                                </div>
+                            </address>
+                        </div>
+                        <!-- /col-md-9 -->
+                        <div class="col-md-3">
+                            <br>
+                            <div>
+                                <div class="pull-left"><strong>需求手机卡数量：</strong></div>
+                                <div class="pull-right" th:text="${cApplyCard.applyCardNumber}"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div>
+                                <!-- /col-md-3 -->
+                                <div class="pull-left"><strong>申请时间：</strong></div>
+                                <div class="pull-right"
+                                     th:text="${#dates.format(cApplyCard.applyDate, 'yyyy/MM/dd HH:mm')}"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <!-- /row -->
+                            <br>
+                            <div class="btn-group btn-group-justified">
+
+                                <div class="icn-main-container" th:if="${cardTask!=null}">
+                                <span class="icn-container">
+                                    <span style="font-size: 10px">排队序号</span>
+                                    <span th:text="${cardTask.taskNumber}"></span>
+                                    <span style="font-size: 10px">号</span>
+                                </span>
+                                </div>
+                                <span th:if="${cApplyCard.status} eq ${applyStatus.IN_PROCESS} and ${cApplyCard.personConsent} ne 'Y' ">
+                                    <div class="btn-group">
+                                        <button class="btn btn-theme" type="button" v-on:click="consent">同意办卡</button>
+                                    </div>
+                                </span>
+                                <span th:if="${cApplyCard.status} eq ${applyStatus.UNDER_REVIEW}">
+                                    <div class="btn-group">
+                                        <button class="btn btn-warning" type="button"
+                                                v-on:click="revocation">撤回申请</button>
+                                    </div>
+                                </span>
+
+
+                            </div>
+                        </div>
+                        <!-- /invoice-body -->
+                    </div>
+                    <br>
+                    <br>
+                    <div class="pull-left">
+                        <address>
+                            <strong title="Phone">处理人:</strong><span
+                                th:text="${cApplyCard.disposePersonName }"></span><br>
+                            处理时间：<span
+                                th:text="${#dates.format(cApplyCard.disposeDate, 'yyyy/MM/dd HH:mm')}"></span><br>
+                            反馈理由：<span th:text="${cApplyCard.disposeRemark}"></span>
+                        </address>
+                    </div>
+                    <!-- /pull-left -->
+                    <div class="pull-right">
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- /col-lg-10 -->
+                    <strong>变动历史.</strong><br>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-left">办理人</th>
+                            <th class="text-right">处理人</th>
+                            <th class="text-right">处理后状态</th>
+                            <th class="text-right">备注</th>
+                            <th class="text-right">时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(list,index) in records">
+                            <td class="text-center">{{index+1}}</td>
+                            <td>{{list.applyPersonName}}</td>
+                            <td class="text-right">{{list.disposePersonName}}</td>
+                            <td class="text-right">{{list.applyStatus}}</td>
+                            <td class="text-right">{{list.disposeRemark}}</td>
+                            <td class="text-right">{{toDate(list.recordDate)}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                </div>
+                <!--/col-lg-12 mt -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var i = 1;
+    page = new Vue({
+        el: "#applyDetails",
+        data: {
+            id: document.getElementById("detailsId").innerText,
+            records: "",
+            applyStatus: ""
+        }, methods: {
+            //时间转换
+            toDate: window.toDate,
+            //获取申请状态
+            getApplyStatus: function () {
+                axios.get("/cardApply/user/apply/applyStatus")
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.applyStatus = value.data.data
+                        }
+                    ).catch(serverError);
+            },
+            //获取办卡历史变动
+            getApplyRecords: function () {
+
+                var applyId = document.getElementById("detailsId").innerText;
+                axios.get("/cardApply/user/applyRecord/getApplyRecords?applyId=" + applyId)
+                    .then(function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.records = value.data.data
+                        }
+                    ).catch(serverError);
+            },
+            //撤回
+            revocation: function () {
+
+                window.confirm("确定撤销预约吗?", function () {
+
+                    axios.put("/cardApply/user/apply/revocation?applyId=" + page.id).then(function (value) {
+                        alert(value.data.massage);
+                        if (value.data.status) {
+                            getPage("/cardApply/user/apply/applyDetail", "applyId=" + page.id);
+                        }
+                    }).catch(serverError)
+                }, "是否撤销");
+            },
+            //用户同意
+            consent: function () {
+                axios.put("/cardApply/user/apply/consent?applyId=" + page.id).then(function (value) {
+                    alert(value.data.massage);
+                    if (value.data.status) {
+                        getPage("/cardApply/user/apply/applyDetail", "applyId=" + page.id);
+                    }
+                }).catch(serverError)
+            }
+        }, mounted: function () {
+            this.getApplyRecords();
+        }
+    })
+</script>

@@ -1,0 +1,138 @@
+<style>
+    .button {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<section class="wrapper" id="myApplyList">
+    <!--ADVANCED FILE INPUT-->
+    <div class="row mt" style="margin-top: 2px">
+        <div class="col-md-12 mt" style="margin-top: 10px;padding: 0px">
+            <div class="content-panel">
+                <table class="table table-bordered table-striped table-condensed cf table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>预约人</th>
+                        <th>申请时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    <tr class="data" style="vertical-align: center"
+                        v-for="(list,index) in pageInfo.list">
+                        <td>{{index+pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}</td>
+                        <td>{{list.applyPersonName}}</td>
+                        <td>{{toDate(list.applyDate)}}</td>
+                        <td>{{list.status}}</td>
+                        <td>
+                            <button class="btn btn-default button"
+                                    v-on:click="getPage('/cardApply/user/apply/applyDetail','applyId='+list.applyId)">
+                                <i class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                            </button>
+                            <button class="btn btn-warning button" v-if="list.status == '审核中'"
+                                    v-on:click="revocation(list.applyId)"><i class="fa fa-times"></i>撤销
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="dataTables_info" id="hidden-table-info_info">
+                            总共{{pageInfo.total}}条数据,目前第{{pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}条到{{(pageInfo.pageNum*pageInfo.pageSize>pageInfo.total)?pageInfo.total:pageInfo.pageNum*pageInfo.pageSize}}条
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul>
+
+                                <li class="prev" v-if="!pageInfo.isFirstPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum - 1)">← 上一页</a>
+                                </li>
+
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 2)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 2)">{{pageInfo.pageNum - 2}}</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 1)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                                </li>
+
+                                <li class="active"><a href="#">{{pageInfo.pageNum}}</a></li>
+
+                                <li v-for="n in 2">
+                                    <a href="#" v-if="(pageInfo.pageNum + n)<=pageInfo.lastPage"
+                                       v-on:click="getData(pageInfo.pageNum + n)">{{pageInfo.pageNum + n}}</a>
+                                </li>
+
+                                <li class="next" v-if="!pageInfo.isLastPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum + 1)">下一页 → </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    page = new Vue({
+        el: "#myApplyList",
+        data: {
+            pageInfo: "",
+        },
+        methods: {
+            getPage: window.getPage,
+            toDate: window.toDate,
+            //撤回
+            revocation: function (id) {
+                confirm("确定撤销申请吗?", function () {
+                    axios.put("/cardApply/user/apply/revocation?applyId=" + id).then(function (value) {
+                        alert(value.data.massage);
+                    }).catch(function (reason) {
+                        alert("服务端出错");
+                    })
+                });
+            }, //搜索
+            search: function () {
+                var name = $("#search-name").val();
+                var $data = $(".data");
+                var c = 0
+                for (var i = 0; i < $data.length; i++) {
+                    var attr = $($data[i]).attr("search");
+                    var length = attr.split(name).length;
+                    if (length > 1) {
+                        $($data[i]).css("display", " table-row");
+                    } else {
+                        $($data[i]).css("display", " none");
+                    }
+                }
+            }, getData: function (num) {
+                if (isNaN(num) || typeof num == "undefined" || parseInt(num) < 1) {
+                    num = 1;
+                }
+                axios.get("/cardApply/user/apply/myApplyList/" + num)
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.pageInfo = value.data.data
+                        }
+                    ).catch(function (error) {
+                    // 请求失败处理
+                    alert("服务端错误" + error);
+                });
+            }
+        }, mounted: function () {
+            this.getData()
+        }
+    })
+</script>
+

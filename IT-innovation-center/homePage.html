@@ -1,0 +1,253 @@
+<section class="wrapper">
+    <div class="row">
+        <div class="col-lg-9 main-chart">
+            <!--标题 -->
+            <div class="border-head">
+                <h3>创新服务中心</h3>
+            </div>
+            <!--标题结束-->
+            <div class="row">
+                <!-- TWITTER PANEL -->
+                <div class="col-md-4 mb">
+                    <div class="twitter-panel pn">
+                        <i class="fa fa-twitter fa-4x"></i>
+                        <p onclick="window.location.href='https://01wangxiao.idsmanager.com'">嘿.你好!
+                            欢迎来到it创新中心，准备好了今天要开始愉快的工作了吗？点击这里开始工作吧.</p>
+                        <p class="user">@九州云腾</p>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+                <div class="col-md-4 mb">
+                    <!-- WHITE PANEL - TOP USER -->
+                    <div class="white-panel pn">
+                        <div class="white-header">
+                            <h5>首次签到用户</h5>
+                        </div>
+                        <p><img class="img-circle" src="/Dashio/img/ui-zac.jpg" width="50"></p>
+                        <p><b>Zac Snider</b></p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="small mt">MEMBER SINCE</p>
+                                <p>2012</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="small mt">TOTAL SPEND</p>
+                                <p>$ 47,60</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+                <div class="col-md-4 mb">
+                    <!-- INSTAGRAM PANEL -->
+                    <div class="instagram-panel pn">
+                        <i class="fa fa-instagram fa-4x"></i>
+                        <p>@THISISYOU<br> 5 min. ago
+                        </p>
+                        <p><i class="fa fa-comment"></i> 18 | <i class="fa fa-heart"></i> 49</p>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+            </div>
+            <!-- /row -->
+            <div class="row">
+                <!-- WEATHER PANEL -->
+                <div class="col-md-4 mb">
+                    <div class="weather pn">
+                        <i class="fa fa-cloud fa-4x"></i>
+                        <h2>11º C</h2>
+                        <h4>上海</h4>
+                    </div>
+                </div>
+                <!-- /col-md-4-->
+                <!-- 吐槽面板 -->
+                <div class="col-md-8 mb">
+                    <div class="message-p pn">
+                        <div class="message-header">
+                            <h5>意见反馈-吐槽大会</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 centered hidden-sm hidden-xs">
+                                <img class="img-circle" src="/view/img/logo.jpg" width="65">
+                            </div>
+                            <div class="col-md-9">
+                                <p>
+                                    <name>创新中心</name>
+                                    给您发了个消息.
+                                </p>
+                                <p class="small"></p>
+                                <p class="message">电脑又双叒叕炸了？赶紧给我们提个建议吧, <br> 告诉我们是哪个电脑(•́へ•́╬).</p>
+                                <form class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <input class="form-control" id="exampleInputText" placeholder="输入您宝贵的意见"
+                                               type="text">
+                                    </div>
+                                    <button class="btn btn-default" type="submit">发送</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Message Panel-->
+                </div>
+                <!-- /col-md-8  -->
+            </div>
+
+            <div class="row mt">
+                <!-- SERVER STATUS PANELS -->
+                <div class="col-md-4 col-sm-4 mb">
+                    <div class="grey-panel pn donut-chart">
+                        <div class="grey-header">
+                            <h5>运行状态</h5>
+                        </div>
+                        <canvas height="120" id="serverstatus01" style="width: 120px; height: 120px;"
+                                width="120"></canvas>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-6 goleft">
+                                <p>Usage<br>Increase:</p>
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <h2>21%</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /grey-panel -->
+                </div>
+                <!-- /col-md-4-->
+                <div class="col-md-4 col-sm-4 mb">
+                    <div class="darkblue-panel pn">
+                        <div class="darkblue-header">
+                            <h5>硬盘状态</h5>
+                        </div>
+                        <canvas height="120" id="serverstatus02" style="width: 120px; height: 120px;"
+                                width="120"></canvas>
+                        <p>April 17, 2014</p>
+                        <footer>
+                            <div class="pull-left">
+                                <h5><i class="fa fa-hdd-o"></i> 17 GB</h5>
+                            </div>
+                            <div class="pull-right">
+                                <h5>60% Used</h5>
+                            </div>
+                        </footer>
+                    </div>
+                    <!--  /darkblue panel -->
+                </div>
+                <!-- /col-md-4 -->
+                <div class="col-md-4 col-sm-4 mb">
+                    <!-- REVENUE PANEL -->
+                    <div class="green-panel pn">
+                        <div class="green-header">
+                            <h5>REVENUE</h5>
+                        </div>
+                        <div class="chart mt">
+                            <div class="sparkline" data-data="[200,135,667,333,526,996,564,123,890,464,655]"
+                                 data-fill-color="" data-height="75" data-highlight-line-color="#fff"
+                                 data-line-color="#fff" data-line-width="1" data-resize="true" data-spot-color="#fff"
+                                 data-spot-radius="4" data-type="line" data-width="90%">
+                                <canvas height="75"
+                                        style="display: inline-block; width: 229px; height: 75px; vertical-align: top;"
+                                        width="229"></canvas>
+                            </div>
+                        </div>
+                        <p class="mt"><b>$ 17,980</b><br>Month Income</p>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /col-lg-9 END SECTION MIDDLE -->
+        <!-- **********************************************************************************************************************************************************
+            RIGHT SIDEBAR CONTENT
+            *********************************************************************************************************************************************************** -->
+        <div class="col-lg-3 ds">
+            <!-- USERS ONLINE SECTION -->
+            <h4 class="centered mt">it常见问题解答</h4>
+            <!-- First Member -->
+            <div class="desc">
+                <div class="thumb">
+                    <img align="" class="img-circle" height="35px" src="/Dashio/img/ui-divya.jpg" width="35px">
+                </div>
+                <div class="details">
+                    <p>
+                        <a href="#">电脑蓝屏了怎么办？</a><br>
+                        <muted>
+                            原因分析：电脑超频运行致CPU过热或是内部硬件温度过高 <br>
+                            解决办法：此时要查看CPU风扇和显卡风扇是否正常转动，若正常，则主要考虑加强散热，可以考虑添加机箱散热。
+                        </muted>
+                    </p>
+                </div>
+            </div>
+            <!-- Second Member -->
+            <div class="desc">
+                <div class="thumb">
+                    <img align="" class="img-circle" height="35px" src="/Dashio/img/ui-sherman.jpg" width="35px">
+                </div>
+                <div class="details">
+                    <p>
+                        <a href="#">插入U盘后没有反应？？？</a><br>
+                        <muted>
+                            原因分析：电脑自身设置或U盘损坏 <br>
+                            解决方法：更换接口，若U盘仍是无反应，可将其插入到其他电脑的USB接口尝试，如果在其他电脑上能够正常读取，则问题出在电脑设置上，相反，若在其他电脑上仍是无法读取，则大有可能是U盘出现问题了。
+                        </muted>
+                    </p>
+                </div>
+            </div>
+            <!-- Third Member -->
+            <div class="desc">
+                <div class="thumb">
+                    <img align="" class="img-circle" height="35px" src="/Dashio/img/ui-danro.jpg" width="35px">
+                </div>
+                <div class="details">
+                    <p>
+                        <a href="#">电脑温度过高引起卡得不行了???</a><br>
+                        <muted>原因分析：后台运行的程序过多，超出了CPU承受的范围。也有可能是电脑机箱散热不好所导致的 <br>
+
+                            解决方法：可以利用一些清理软件将后台不必要的程序停止运行，和清理一下系统垃圾。关于机箱散热，我们可以对其做一些简单的维护，如清理一下机箱内部的灰尘，特别是CPU以及散热风扇上的灰尘。
+                        </muted>
+                    </p>
+                </div>
+            </div>
+            <!-- Fourth Member -->
+            <div class="desc">
+                <div class="thumb">
+                    <img align="" class="img-circle" height="35px" src="/Dashio/img/ui-zac.jpg" width="35px">
+                </div>
+                <div class="details">
+                    <p>
+                        <a href="#">网络无法使用?</a><br>
+                        <muted>1、原因分析：未正确安装网卡驱动 <br>
+                            解决方法：重新下载安装网卡驱动，如驱动精灵等等 <br>
+                            2、原因分析：IP地址冲突 <br>
+                            解决方法：①点击电脑右下角的网络连接图标，点击“打开网络和共享中心” <br>
+                            ②在打开的新窗口中，点击左上角的“更改适配器设置” <br>
+                            ③打开“网络连接”，在此右键点击“本地连接”选择“属性”按钮 <br>
+                            ④弹出本地连接属性对话框，双击“此连接使用下列项目”列表中的“Internet 协议版本4（TCP/IPv4）”选项 <br>
+                            ⑤弹出“Internet 协议版本4（TCP/IPv4）”对话框，选择“使用下面的 IP 地址”单选项，然后在“IP 地址”文本框中为本机分配 IP 地址 <br>
+                            ⑥填好后，将鼠标光标定位到“子网掩码”文本框，系统将自动填充子网掩码 <br>
+                            ⑦在“默认网关”中输入网关地址，也就是路由器的地址。然后点击“确定”按钮保存即可设置成功<br>
+                        </muted>
+                    </p>
+                </div>
+            </div>
+            <!-- CALENDAR-->
+            <div class="mb" id="calendar">
+                <div class="panel green-panel no-margin">
+                    <div class="panel-body">
+                        <div class="popover top" data-original-title=""
+                             id="date-popover"
+                             style="cursor: pointer; margin-left: 33%; margin-top: -50px; width: 175px; display: none;"
+                             title="">
+                            <div class="arrow"></div>
+                            <h3 class="popover-title" style="disadding: none;"></h3>
+                            <div class="popover-content" id="date-popover-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / calendar -->
+        </div>
+        <!-- /col-lg-3 -->
+    </div>
+    <!-- /row -->
+</section>

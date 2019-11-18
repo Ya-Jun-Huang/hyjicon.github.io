@@ -1,0 +1,398 @@
+<style>
+    .current-number {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 130px;
+        font-size: 40px;
+        font-family: 'Ruda', sans-serif;
+    }
+</style>
+
+<section class="wrapper site-min-height" id="workDetails">
+    <span id="detailsId" style="display: none" th:text="${work.workId}"></span>
+    <span id="status" style="display: none" th:text="${work.status}"></span>
+    <div class="row mt" style="margin: 0px">
+        <div class="col-lg-12">
+            <div class="row content-panel">
+                <div class="col-md-4 profile-text mt mb centered">
+                    <div class="right-divider hidden-sm hidden-xs">
+                        <h4><span th:text="${all.size()}"></span></h4>
+                        <h6>总人数</h6>
+                        <h4><span th:text="${consent.size()}"></span></h4>
+                        <h6>响应人数</h6>
+                        <h4><span th:text="${notConsent.size()}"></span></h4>
+                        <h6>未响应人数</h6>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+                <div class="col-md-4 profile-text">
+                    <h3><span th:text="${work.workName}"></span></h3>
+                    <h6>结束时间<span th:text="${#dates.format(work.endDate, 'yyyy/MM/dd HH:mm')}"></span></h6>
+                    <p>
+                    <div class="input-group date form_datetime-adv" id="date">
+                        <div class="input-group-btn">
+                            <button class="btn btn-theme02 date-reset" type="button"><i
+                                    class="fa fa-times"></i></button>
+                            <button class="btn btn-theme date-set" type="button"><i
+                                    class="fa fa-calendar"></i></button>
+                        </div>
+                        <input class="form-control" id="endDate" name="endDate" size="16" type="text">
+                    </div>
+                    </p>
+                    <br>
+                    <p>
+                        <button class="btn btn-theme" v-on:click="chanEndDate"><i class="fa fa-pencil-square"></i>修改结束时间
+                        </button>
+                    </p>
+                </div>
+                <!-- /col-md-4 -->
+                <div class="col-md-4 centered">
+                    <div class="profile-pic">
+                        <p>
+
+                        <div class="icn-main-container">
+                            <span class="icn-container">
+                                <span style="font-size: 10px">上次</span>
+                                <span th:text="${work.currentTaskNumber}"></span>
+                                <span style="font-size: 10px">号</span>
+                            </span>
+                        </div>
+                        </p>
+                        <p>
+                            <button class="btn btn-danger  btn-sm" v-on:click="shutDown">强制结束</button>
+                            <button class="btn btn-warning btn-sm" v-on:click="stop">结束工作</button>
+                            <button class="btn btn-theme02 btn-sm"
+                                    v-on:click="taskList">
+                                <i class="fa fa-mail-forward"></i>去工作单
+                            </button>
+                        </p>
+                    </div>
+                </div>
+                <!-- /col-md-4 -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /col-lg-12 -->
+        <div class="col-lg-12 mt">
+            <div class="row content-panel">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active">
+                            <a aria-expanded="true" data-toggle="tab" href="#overview">总体预览</a>
+                        </li>
+                        <li class="">
+                            <a aria-expanded="false" class="contact-map" data-toggle="tab" href="#contact">详细信息</a>
+                        </li>
+                        <li class="">
+                            <a aria-expanded="false" data-toggle="tab" href="#edit">绑定手机卡</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /panel-heading -->
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="overview">
+                            <div class="row">
+                                <div class="col-md-6">
+                                     <span class="detailed">
+                                    <h4>消息推送</h4>
+                                </span>
+                                    <textarea class="form-control" placeholder="给未响应的人发条消息吧！"
+                                              rows="3"></textarea>
+                                    <div class="grey-style">
+                                        <div class="pull-left">
+                                        </div>
+                                        <div class="pull-right">
+                                            <button class="btn btn-sm btn-theme03" v-on:click="taskList">发送</button>
+                                        </div>
+                                    </div>
+                                    <!-- /detailed -->
+                                </div>
+                                <!-- /col-md-6 -->
+                                <div class="col-md-6 detailed">
+                                    <h4>用户状态</h4>
+                                    <div class="row centered mt mb">
+                                        <div class="col-sm-4">
+                                            <h1><i class="fa fa-user"></i></h1>
+                                            <h3><span th:text="${all.size()}"></span></h3>
+                                            <h6>总人数</h6>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h1><i class="fa fa-star"></i></h1>
+                                            <h3><span th:text="${consent.size()}"></span></h3>
+                                            <h6>响应人数</h6>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h1><i class="fa fa-warning"></i></h1>
+                                            <h3><span th:text="${notConsent.size()}"></span></h3>
+                                            <h6>未响应人数</h6>
+                                        </div>
+                                    </div>
+                                    <!-- /row -->
+                                </div>
+                                <!-- /col-md-6 -->
+                            </div>
+                            <!-- /OVERVIEW -->
+                        </div>
+                        <!-- /tab-pane -->
+                        <div class="tab-pane" id="contact">
+                            <div class="row">
+                                <!-- /col-md-6 -->
+                                <div class="col-md-12 detailed">
+                                    <h4>总预约人详细</h4>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>名字</th>
+                                            <th>预约时间</th>
+                                            <th>手机</th>
+                                            <th>查看</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="apply,stat : ${all}">
+                                            <td><span th:text="${stat.index+1}"></span></td>
+                                            <td><span th:text="${apply.applyPersonName}"></span></td>
+                                            <td><span
+                                                    th:text="${#dates.format(apply.applyDate, 'yyyy/MM/dd HH:mm')}"></span>
+                                            </td>
+                                            <td><span th:text="${apply.applyPhoneNumber}"></span></td>
+                                            <td><a class="btn btn-default button" style="padding: 0px"
+                                                   th:onclick="javascript:getPage('/cardApply/mana/apply/applyDetail','applyId='+[[${apply.applyId}]])"><i
+                                                    class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                            </a>
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <h4>响应人详细</h4>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>名字</th>
+                                            <th>预约时间</th>
+                                            <th>手机</th>
+                                            <th>查看</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="apply,stat : ${consent}">
+                                            <td><span th:text="${stat.index+1}"></span></td>
+                                            <td><span th:text="${apply.applyPersonName}"></span></td>
+                                            <td><span
+                                                    th:text="${#dates.format(apply.applyDate, 'yyyy/MM/dd HH:mm')}"></span>
+                                            </td>
+                                            <td><span th:text="${apply.applyPhoneNumber}"></span></td>
+                                            <td><a class="btn btn-default button" style="padding: 0px"
+                                                   th:onclick="javascript:getPage('/cardApply/mana/apply/applyDetail','applyId='+[[${apply.applyId}]])"><i
+                                                    class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                            </a>
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <h4>未响应人详细</h4>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>名字</th>
+                                            <th>预约时间</th>
+                                            <th>手机</th>
+                                            <th>查看</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="apply,stat : ${notConsent}">
+                                            <td><span th:text="${stat.index+1}"></span></td>
+                                            <td><span th:text="${apply.applyPersonName}"></span></td>
+                                            <td><span
+                                                    th:text="${#dates.format(apply.applyDate, 'yyyyMM/dd HH:mm')}"></span>
+                                            </td>
+                                            <td><span th:text="${apply.applyPhoneNumber}"></span></td>
+                                            <td><a class="btn btn-default button" style="padding: 0px"
+                                                   th:onclick="javascript:getPage('/cardApply/mana/apply/applyDetail','applyId='+[[${apply.applyId}]])"><i
+                                                    class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                            </a>
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /col-md-6 -->
+                            </div>
+                            <!-- /row -->
+                        </div>
+                        <!-- /tab-pane -->
+                        <div class="tab-pane" id="edit">
+                            <div class="row">
+                                <div class="col-lg-8 col-lg-offset-2 detailed">
+                                    <h4 class="mb">excel表格导入</h4>
+                                    <form class="form-horizontal" enctype="multipart/form-data" id="importFrom"
+                                          name="importFrom" role="form">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">选择文件</label>
+                                            <div class="col-lg-6">
+                                                <input class="file-pos" id="excel" name="excel" type="file">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-2 col-lg-10">
+                                                <span class="btn btn-theme" type="submit"
+                                                      v-on:click="importBind">导入</span>
+                                                <a class="btn-link" href="/cardApply/mana/sim/temp"><i
+                                                        class="fa fa-thumb-tack"></i><span>模板</span></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--                                <div class="col-lg-8 col-lg-offset-2 detailed mt">-->
+                                <!--                                    <h4 class="mb">有遗漏？来试试手动绑定吧。</h4>-->
+                                <!--                                    <form class="form-horizontal" role="form">-->
+                                <!--                                        <div class="form-group">-->
+                                <!--                                            <label class="col-lg-2 control-label">选择手机卡</label>-->
+                                <!--                                            <div class="col-lg-6">-->
+                                <!--                                                <select class="form-control" id="addr1" placeholder="选择手机卡"-->
+                                <!--                                                        type="text"></select>-->
+                                <!--                                            </div>-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="form-group">-->
+                                <!--                                            <label class="col-lg-2 control-label">选择申请</label>-->
+                                <!--                                            <div class="col-lg-6">-->
+                                <!--                                                <select class="form-control" id="addr2" placeholder="选择申请"-->
+                                <!--                                                        type="text"></select>-->
+                                <!--                                            </div>-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="form-group">-->
+                                <!--                                            <div class="col-lg-offset-2 col-lg-10">-->
+                                <!--                                                <button class="btn btn-theme" type="submit">绑定</button>-->
+                                <!--                                            </div>-->
+                                <!--                                        </div>-->
+                                <!--                                    </form>-->
+                                <!--                                </div>-->
+                                <!-- /col-lg-8 -->
+                            </div>
+                            <!-- /row -->
+                        </div>
+                        <!-- /tab-pane -->
+                    </div>
+                    <!-- /tab-content -->
+                </div>
+                <!-- /panel-body -->
+            </div>
+            <!-- /col-lg-12 -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</section>
+
+
+<script>
+
+
+    var page = new Vue({
+        el: "#workDetails",
+        data: {
+            id: document.getElementById("detailsId").innerText,
+            getPage: window.getPage
+        }, methods: {
+            //修改时间;
+            chanEndDate: function () {
+                var endDate = $("#endDate").val();
+                if (endDate == null || endDate == "") {
+                    alert("结束时间不能为空");
+                    return;
+                }
+                if (new Date(endDate).getTime() < new Date().getTime()) {
+                    alert("结束时间不能小于现在");
+                    return;
+                }
+                var url = strConcat("/cardApply/mana/work/chanEndDate?", "endDate=", endDate, "&workId=", page.id);
+                axios.put(url).then(function (value) {
+                    outMassage(value);
+                    if (value.data.status) getPage('/cardApply/mana/work/workDetails', 'workId=' + page.id)
+                })
+            },
+            //强制结束工作
+            shutDown: function () {
+                confirm("强制停止会提前清算工作，请问是否继续执行？", function () {
+                    axios.put("/cardApply/mana/work/shutDown?workId=" + page.id).then(outMassage).catch(serverError);
+                }, "是否强制停止当前工作？");
+
+            },
+            //结束工作
+            stop: function () {
+                confirm("停止清算工作，请问是否继续执行？", function () {
+                    axios.put("/cardApply/mana/work/stop?workId=" + page.id).then(outMassage).catch(serverError);
+                }, "是否停止当前工作？");
+            },
+            //模板
+            temp: function () {
+                axios.get("/cardApply/mana/sim/temp")
+            },
+            //导入
+            importBind: function () {
+
+                var file = document.getElementById("excel").files[0];
+                if (typeof file == "undefined" || file == null) {
+                    alert("请选择文件");
+                    return;
+                }
+                var strings = file.name.split(".");
+                var name = strings[strings.length - 1];
+                if (typeof name == "undefined" || name == null || (name != "xls" && name != "xlsx")) {
+                    alert("请上传excel文件");
+                    return;
+                }
+                var param = new FormData();
+                param.append("excel", file);
+                var config = {
+                    headers: {"Content-Type": "multipart/form-data"}
+                };
+                axios.post("/cardApply/mana/sim/importBind", param, config).then(function (value) {
+                    var content = value.data.massage + "<br>";
+                    content += "<table class=\"table table-bordered table-striped table-condensed cf table-hover\">";
+                    content += "<tr>"
+                    content += "<th>"
+                    content += "手机卡";
+                    content += "</td>"
+                    content += "<td>"
+                    content += "操作结果";
+                    content += "</th>"
+                    content += "</tr>"
+                    for (var num in value.data.data) {
+                        content += "<tr>"
+                        content += "<td>"
+                        content += num;
+                        content += "</td>"
+                        content += "<td>"
+                        content += value.data.data[num];
+                        content += "</td>"
+                        content += "</tr>"
+                    }
+                    content += "</table>";
+                    alertImg(content, "导入结果");
+                }).catch(serverError);
+            },
+            taskList: function () {
+                getPage('/cardApply/mana/cardTask/taskList', 'workId=' + page.id);
+            }
+        }
+    });
+
+
+    //创建日历
+    $("#date").datetimepicker({
+        format: "yyyy-mm-dd hh:mm:ss",
+        language: 'zh-CN',
+        weekStart: 1,
+        autoclose: true,
+        minView: 2
+    });
+</script>

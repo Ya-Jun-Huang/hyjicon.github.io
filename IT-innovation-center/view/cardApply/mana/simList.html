@@ -1,0 +1,205 @@
+<style>
+    .button {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<section class="wrapper" id="simList">
+    <div class="row mt" style="margin-top: 2px">
+        <div class="col-md-12 mt" style="margin-top: 10px;padding: 0px">
+            <div class="content-panel">
+                <div class="form-inline" style="text-align:center">
+                    <form action="" id="searchForm" name="searchForm">
+                        <input name="status" type="hidden">
+                        <div class="btn-group">
+                            <input class="form-control btn btn-default" name="simnumber" placeholder="手机卡号"
+                                   style="width: 100px;display: inline-block"
+                                   type="text">
+                            <input class="form-control btn btn-default" name="ownername" placeholder="持有人"
+                                   style="width: 100px;display: inline-block"
+                                   type="text">
+                        </div>
+                        <button class="btn btn-theme" style="width: 70px;display: inline-block" type="button"
+                                v-on:click="getData"><i class="fa fa-search"></i>搜索
+                        </button>
+                    </form>
+                </div>
+                <section>
+                    <from id="consentFrom" name="consentFrom">
+                        <table class="table table-bordered table-striped table-condensed cf table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="numeric">手机卡号</th>
+                                <th class="numeric">持有人</th>
+                                <th class="numeric">添加时间</th>
+                                <th class="numeric" style="text-align: center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody v-for="(list,index) in pageInfo.list">
+                            <tr class="data" style="vertical-align: center">
+                                <td data-title="#">{{index+pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}
+                                </td>
+                                <td class="numeric" data-title=" ">{{list.simnumber}}</td>
+                                <td class="numeric" data-title=" ">{{list.ownername}}</td>
+                                <td class="numeric" data-title=" ">{{toDate(list.credate)}}</td>
+                                <td class="numeric" data-title=" " style="text-align: center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-default button"
+                                           v-on:click="getPage('/cardApply/mana/apply/applyDetail','applyId='+list.simid)">
+                                            <i class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </from>
+                </section>
+
+                <div class="row-fluid">
+                    <div style="padding: 5px;text-align: right">
+                        <button class="btn btn-theme" type="button"
+                                v-on:click="openAddFrom"><i class="fa fa-plus-circle"></i></i>添加手机卡
+                        </button>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_info" id="hidden-table-info_info">
+                            总共{{pageInfo.total}}条数据,目前第{{pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}条到{{(pageInfo.pageNum*pageInfo.pageSize>pageInfo.total)?pageInfo.total:pageInfo.pageNum*pageInfo.pageSize}}条
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul>
+                                <li class="prev" v-if="!pageInfo.isFirstPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum - 1)">← 上一页</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 2)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 2)">{{pageInfo.pageNum - 2}}</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 1)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                                </li>
+
+                                <li class="active"><a href="#">{{pageInfo.pageNum}}</a></li>
+
+                                <li v-for="n in 2">
+                                    <a href="#" v-if="(pageInfo.pageNum + n)<=pageInfo.lastPage"
+                                       v-on:click="getData(pageInfo.pageNum + n)">{{pageInfo.pageNum + n}}</a>
+                                </li>
+
+                                <li class="next" v-if="!pageInfo.isLastPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum + 1)">下一页 → </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="addSim" class="modal fade" id="addSim" role="dialog"
+         style="z-index: 1000000">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+                    <h4 class="modal-title">添加手机卡</h4>
+                </div>
+                <div class="modal-body">
+                    <from id="addSimFrom" name="addSimFrom">
+                        <div class="form-group">
+                            <input class="form-control" data-msg="Please enter at least 4 chars"
+                                   data-rule="minlen:4" id="simnumber" name="simnumber" placeholder="请填写手机卡号"
+                                   type="name">
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" data-msg="Please enter a valid email"
+                                   data-rule="email" id="operator" name="operator" placeholder="请填写运营商"
+                                   type="email">
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-send">
+                            <span class="btn btn-large btn-primary" v-on:click="add()">添加</span>
+                        </div>
+                    </from>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" type="button">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    page = new Vue({
+        el: "#simList",
+        data: {
+            pageInfo: "",
+        },
+        methods: {
+            getPage: window.getPage,
+            confirm: window.confirm,
+            toDate: window.toDate,
+            //
+            openAddFrom: function () {
+                //
+                $('#addSim').modal('show');
+            },
+            //删除
+            delete: function () {
+
+            }, add: function () {
+                var simnumber = document.getElementById("simnumber").value;
+                if (simnumber == "") {
+                    alert("手机卡号不能为空");
+                    return;
+                }
+                if (simnumber.length != 11 || isNaN(simnumber)) {
+                    alert("手机卡号需要11位数字");
+                    return;
+                }
+                var operator = document.getElementById("operator").value;
+                if (operator == "") {
+                    alert("运营商不能未空");
+                    return;
+                }
+
+                axios.post(strConcat("/cardApply/mana/sim/addSim?", "simnumber=", parseInt(simnumber), "&operator=", operator)).then(function (value) {
+                    outMassage(value);
+                    if (value.data.status)
+                        page.getData();
+                }).catch(serverError);
+            },
+            //获取数据
+            getData: function (num) {
+                //
+                var data = $("#searchForm").serialize();
+                //
+                if (isNaN(num) || typeof num == "undefined" || parseInt(num) < 1) {
+                    num = 1;
+                }
+                //
+                axios.get(strConcat("/cardApply/mana/sim/simList/", num, "?", data))
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.pageInfo = value.data.data
+                        }
+                    ).catch(serverError);
+            },
+        }, mounted: function () {
+            this.getData()
+
+        }
+    })
+</script>
+

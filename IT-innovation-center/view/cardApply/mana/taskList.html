@@ -1,0 +1,162 @@
+<section class="wrapper site-min-height">
+    <div class="row">
+        <span id="workId" style="display: none" th:text="${work.workId}"></span>
+        <div class="form-panel"><i class="fa fa-angle-right"></i>
+            <span th:text="${work.workName}"></span>工作单
+        </div>
+        <div class="col-lg-12 mt">
+            <div class="row content-panel">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active"><a aria-expanded="true" data-toggle="tab" href="#overview">未处理</a></li>
+                        <li class=""><a aria-expanded="false" class="contact-map" data-toggle="tab"
+                                        href="#contact">已处理</a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="overview">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="carousel slide" id="unDisposed">
+                                        <!-- 轮播（Carousel）指标 -->
+                                        <ol class="carousel-indicators">
+                                            <li class="active" data-target="#unDisposed"
+                                                th:data-slide-to="${stat.index}" th:each="task,stat : ${unDispose}"></li>
+                                        </ol>
+                                        <!-- 轮播（Carousel）项目 -->
+                                        <div class="carousel-inner">
+                                            <div th:class="${(work.currentTaskNumber+1==task.taskNumber)?'item active':'item'}"
+                                                 th:each="task,stat :${unDispose}">
+                                                <div class="custom-box">
+                                                    <div class="servicetitle">
+                                                        <h4>黄雅军<span th:if="${work.currentTaskNumber+1==task.taskNumber}"><span class="label label-success" style="font-size: 10px">当前需要办理</span></span></h4>
+                                                        <hr>
+                                                    </div>
+                                                    <div class="icn-main-container">
+                                                        <span class="icn-container"><span th:text="${task.taskNumber}"></span></span>
+                                                    </div>
+                                                    <p style="width: 200px;display: inline-block">申请理由：<span
+                                                            th:text="${task.applyCard.applyRemark}"></span></p>
+                                                    <ul class="pricing">
+                                                        <li>需求手机卡数：<span
+                                                                th:text="${task.applyCard.applyCardNumber}"></span>张
+                                                        </li>
+                                                        <li>申请时间：<span
+                                                                th:text="${#dates.format(task.applyCard.applyDate, 'yyyy/MM/dd HH:mm')}"></span>
+                                                        </li>
+                                                        <li>手机号：<span
+                                                                th:text="${task.applyCard.applyPhoneNumber}"></span>
+                                                        </li>
+                                                        <li>身份证号：<span
+                                                                th:text="${task.applyCard.applyPersonIdcard}"></span>
+                                                        </li>
+                                                        <li>是否已经办理：<span
+                                                                th:text="${(task.whetherDispose != 'Y')?'未办理':'已办理'}"></span>
+                                                        </li>
+                                                        <li>办理人：<span th:text="${task.disposePersonName}"></span></li>
+                                                    </ul>
+                                                    <span th:if="${work.currentTaskNumber+1==task.taskNumber}"  th:onclick="javascript:dispose([[${task.taskId}]])"><a class="btn btn-theme" href="#">办理</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 轮播（Carousel）导航 -->
+                                        <a class="left carousel-control" data-slide="prev" href="#unDisposed"
+                                           role="button">
+                                            <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+                                            <span class="sr-only">上一张</span>
+                                        </a>
+                                        <a class="right carousel-control" data-slide="next" href="#unDisposed"
+                                           role="button">
+                                            <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+                                            <span class="sr-only">下一张</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="contact">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="carousel slide" id="dispose">
+                                        <!-- 轮播（Carousel）指标 -->
+                                        <ol class="carousel-indicators">
+                                            <li th:class="${(stat.index==0)?'item active':'item'}" data-target="#dispose"
+                                                th:data-slide-to="${stat.index}" th:each="task,stat : ${dispose}"></li>
+                                        </ol>
+                                        <!-- 轮播（Carousel）项目 -->
+                                        <div class="carousel-inner">
+                                            <div th:each="task,stat :${dispose}">
+                                                <div class="custom-box">
+                                                    <div class="servicetitle">
+                                                        <h4>黄雅军</h4>
+                                                        <hr>
+                                                    </div>
+                                                    <div class="icn-main-container">
+                                                        <span class="icn-container"><span th:text="${task.taskNumber}"></span></span>
+                                                    </div>
+                                                    <p style="width: 200px;display: inline-block">申请理由：<span
+                                                            th:text="${task.applyCard.applyRemark}"></span></p>
+                                                    <ul class="pricing">
+                                                        <li>需求手机卡数：<span
+                                                                th:text="${task.applyCard.applyCardNumber}"></span>张
+                                                        </li>
+                                                        <li>申请时间：<span
+                                                                th:text="${#dates.format(task.applyCard.applyDate, 'yyyy/MM/dd HH:mm')}"></span>
+                                                        </li>
+                                                        <li>手机号：<span
+                                                                th:text="${task.applyCard.applyPhoneNumber}"></span>
+                                                        </li>
+                                                        <li>身份证号：<span
+                                                                th:text="${task.applyCard.applyPersonIdcard}"></span>
+                                                        </li>
+                                                        <li>是否已经办理：<span
+                                                                th:text="${(task.whetherDispose != 'Y')?'未办理':'已办理'}"></span>
+                                                        </li>
+                                                        <li>办理人：<span th:text="${task.disposePersonName}"></span></li>
+                                                    </ul>
+<!--                                                    <button type="button" class="btn btn-round btn-warning">撤销办理</button>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 轮播（Carousel）导航 -->
+                                        <a class="left carousel-control" data-slide="prev" href="#dispose"
+                                           role="button">
+                                            <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+                                            <span class="sr-only">上一张</span>
+                                        </a>
+                                        <a class="right carousel-control" data-slide="next" href="#dispose"
+                                           role="button">
+                                            <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+                                            <span class="sr-only">下一张</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  /col-lg-12 -->
+    </div>
+    <!--  /row -->
+</section>
+
+
+<script>
+    //办理
+    function dispose(id){
+        var url = "/cardApply/mana/cardTask/disposeTask?taskId="+id;
+
+        axios.put(url).then(function (value) {
+            outMassage(value);
+            if(value.data.status){
+                alert("办理成功");
+                var workId = document.getElementById("workId").value;
+                getPage('/cardApply/mana/cardTask/taskList', 'workId=' + workId);
+            }
+        })
+    }
+</script>

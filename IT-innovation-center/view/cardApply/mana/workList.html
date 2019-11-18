@@ -1,0 +1,189 @@
+<style>
+    .cccc {
+        border-radius: 50%;
+        background-color: black;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        line-height: 20px;
+    }
+
+    .ccc:hover {
+        background-color: rgb(78, 205, 196);
+    }
+
+    .dropdown-toggle {
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .button {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<section class="wrapper" id="workList">
+    <!--ADVANCED FILE INPUT-->
+    <div class="row mt" style="margin-top: 2px">
+        <div class="col-md-12 mt" style="margin-top: 10px;padding: 0px">
+            <div class="content-panel">
+                <div class="form-inline" style="text-align:center">
+                    <form action="" id="searchForm" name="searchForm">
+                        <input name="status" type="hidden" v-model="from.status">
+                        <div class="btn-group">
+                            <button class="btn btn-theme03" type="button">{{from.status}}</button>
+                            <button aria-expanded="false" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown"
+                                    type="button">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li v-for="(value,key) in workStatus"><a href="#" v-on:click="from.status = value">{{value}}</a>
+                                </li>
+                            </ul>
+                            <input class="form-control btn btn-default" name="crePersonName" placeholder="创建人"
+                                   style="width: 100px;display: inline-block"
+                                   type="text">
+                        </div>
+                        <button class="btn btn-theme" style="width: 70px;display: inline-block" type="button"
+                                v-on:click="getData"><i class="fa fa-search"></i>搜索
+                        </button>
+                    </form>
+                </div>
+                <section>
+                    <table class="table table-bordered table-striped table-condensed cf table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="numeric">名称</th>
+                            <th class="numeric">状态</th>
+                            <th class="numeric">创建人</th>
+                            <th class="numeric" style="text-align: center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody v-for="(list,index) in pageInfo.list">
+                        <tr class="data" style="vertical-align: center">
+                            <td data-title="#" >{{index+pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}</td>
+                            <td class="numeric " data-title="名称">{{list.workName}}</td>
+                            <td class="numeric" data-title="状态">{{list.status}}</td>
+                            <td class="numeric" data-title="创建人">{{list.crePersonName}}</td>
+                            <td class="numeric" data-title="操作" style="text-align: center">
+                                <div class="btn-group">
+                                    <button class="btn btn-default button"
+                                       v-on:click="getPage('/cardApply/mana/work/workDetails','workId='+list.workId)">
+                                        <i class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                    </button>
+                                    <button class="btn btn-theme02 button"
+                                            v-on:click="getPage('/cardApply/mana/cardTask/taskList','workId='+list.workId)">
+                                        <i class="fa fa-mail-forward"></i>&nbsp;工作&nbsp;
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div style="padding: 5px;text-align: right">
+                        <button class="btn btn-theme" type="button"
+                                v-on:click="addWork"><i class="fa fa-plus-circle"></i></i>新建办卡工作
+                        </button>
+                    </div>
+                </section>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="dataTables_info" id="hidden-table-info_info">
+                            总共{{pageInfo.total}}条数据,目前第{{pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}条到{{(pageInfo.pageNum*pageInfo.pageSize>pageInfo.total)?pageInfo.total:pageInfo.pageNum*pageInfo.pageSize}}条
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul>
+                                <li class="prev" v-if="!pageInfo.isFirstPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum - 1)">← 上一页</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 2)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 2)">{{pageInfo.pageNum - 2}}</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 1)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                                </li>
+                                <li class="active"><a href="#">{{pageInfo.pageNum}}</a></li>
+                                <li v-for="n in 2">
+                                    <a href="#" v-if="(pageInfo.pageNum + n)<=pageInfo.lastPage"
+                                       v-on:click="getData(pageInfo.pageNum + n)">{{pageInfo.pageNum + n}}</a>
+                                </li>
+                                <li class="next" v-if="!pageInfo.isLastPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum + 1)">下一页 → </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    page = new Vue({
+        el: "#workList",
+        data: {
+            pageInfo: "",
+            workStatus: "",
+            from: {status: "进行中"}
+        },
+        methods: {
+            getPage: window.getPage,
+            //时间转换
+            toDate: window.toDate,
+            //创建办卡工作
+            addWork: function (fun) {
+                axios.get("/cardApply/mana/work/whether").then(function (response) {
+                    //目前有正在进行的事件
+                    if (response.data.status) {
+                        alert("不能创建新的办卡工作，目前已有办卡工作，正在进行当中");
+                    } else {
+                        this.getPage('/view/cardApply/mana/addWork.html');
+                    }
+                }).catch(serverError);
+            },
+            //获取数据
+            getData: function (num) {
+                var data = $("#searchForm").serialize();
+                if (isNaN(num) || typeof num == "undefined" || parseInt(num) < 1) {
+                    num = 1;
+                }
+                axios.get(strConcat("/cardApply/mana/work/getWorks/",num,"?",data))
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.pageInfo = value.data.data
+                        }
+                    ).catch(serverError);
+            },
+            //获取办卡工作状态
+            getWorkStatus: function () {
+                axios.get("/cardApply/mana/work/applyWorkStatus")
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.workStatus = value.data.data
+                        }
+                    ).catch(serverError)
+
+            }
+        }, mounted: function () {
+            this.getData()
+            this.getWorkStatus();
+        }
+    })
+</script>
+

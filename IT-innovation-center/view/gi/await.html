@@ -1,0 +1,101 @@
+<style>
+    .cccc {
+        border-radius: 50%;
+        background-color: black;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        line-height: 20px;
+    }
+
+    .ccc:hover {
+        background-color: rgb(78, 205, 196);
+    }
+</style>
+<section class="wrapper" id="await">
+    <!--ADVANCED FILE INPUT-->
+    <div class="row mt" style="margin-top: 2px">
+        <div class="form-panel">
+            <i class="fa fa-angle-right"></i>打卡系统人脸录入-处理审批请求
+        </div>
+        <div class="col-md-12 mt">
+            <div class="content-panel">
+                <div class="form-inline form-panel">
+                    <input class="form-control" id="search-name" placeholder="请输入您要查找的名字"
+                           style="width: 200px;display: inline-block"
+                           type="text">
+                    <button class="btn btn-theme" style="width: 50px;display: inline-block" type="button"
+                            v-on:click="search">搜索
+                    </button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>名字</th>
+                        <th>部门</th>
+                        <th>提交时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    <tr class="data" v-bind:search="audit.commonUser.name" style="vertical-align: center" v-for="(audit,index) in audits">
+                        <td>{{index+1}}</td>
+                        <td>{{audit.commonUser.name}}</td>
+                        <td>{{audit.commonUser.dept}}</td>
+                        <td>{{toDate(audit.creDate)}}</td>
+                        <td>{{audit.status}}</td>
+                        <td>
+                            <button class="btn btn-success" style="padding: 0px">通过</button>
+                            <button class="btn btn-success" v-on:click="show(audit.picture.path,audit.commonUser.name)" style="padding: 0px">预览</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    new Vue({
+        el: "#await",
+        data: {
+            audits: "",
+        },
+        methods: {
+            toDate: function (data) {
+                return new Date(data).toLocaleDateString()
+            },
+            //搜索
+            search: function () {
+                var name = $("#search-name").val();
+                var $data = $(".data");
+                var c = 0
+                for (var i = 0; i < $data.length; i++) {
+                    var attr = $($data[i]).attr("search");
+                    var length = attr.split(name).length;
+                    if (length > 1) {
+                        $($data[i]).css("display", " table-row");
+                    } else {
+                        $($data[i]).css("display", " none");
+                    }
+                }
+            },show:function (path,name) {
+                var src = "/gi/picture/get?path="+path;
+                var img = "<div style='text-align: center;width: 100%'><img style='width: 100%' src='"+src+"'/></div>";
+                alertImg(img,name);
+            }
+        }, mounted() {
+            axios.get("/gi/underReview")
+                .then(response => (this.audits = response.data)).catch(function (error) {
+                    // 请求失败处理
+                console.log(error);
+            });
+        }
+    })
+</script>
+

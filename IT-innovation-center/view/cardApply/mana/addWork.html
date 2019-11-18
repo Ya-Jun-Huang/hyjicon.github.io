@@ -1,0 +1,92 @@
+<section class="wrapper">
+    <h3><i class="fa fa-angle-right"></i>创建办卡工作</h3>
+    <div class="row mt">
+        <div class="col-lg-12">
+            <div class="form-panel">
+                <form action="#" class="form-horizontal  style-form">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">工作名称</label>
+                        <div class="col-md-4">
+                            <input class="form-control form-control-inline input-medium default-date-picker"
+                                   id="workName" size="16" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">结束时间</label>
+                        <div class="col-md-4">
+                            <div class="input-group date form_datetime-adv" id="date">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-theme02 date-reset" type="button"><i
+                                            class="fa fa-times"></i></button>
+                                    <button class="btn btn-theme date-set" type="button"><i
+                                            class="fa fa-calendar"></i></button>
+                                </div>
+                                <input class="form-control" id="endDate" size="16" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="form-send">
+                    <span class="btn btn-large btn-primary" onclick="commit()" type="submit">创建办卡工作</span>
+                </div>
+            </div>
+
+
+            <!-- /form-panel -->
+        </div>
+        <!-- /col-lg-12 -->
+    </div>
+</section>
+
+
+<script>
+    // $("#date").prop("data-date", new Date().toDateString())
+    //创建日历
+    $("#date").datetimepicker({
+        format: "yyyy-mm-dd hh:mm:ss",
+        language: 'zh-CN',
+        weekStart: 1,
+        autoclose: true,
+        minView: 2
+    });
+
+    //设置办卡工作名称
+    var value = strConcat(new Date().format("yyyy-MM-dd"), "期办卡工作");
+
+    $("#workName").val(value);
+
+    function commit() {
+        var workName = document.getElementById("workName").value;
+
+        var endDate = $("#endDate").val();
+
+        if (workName == null || workName == "") {
+            alert("办卡工作名称不能为空");
+            return;
+        }
+        if (endDate == null || endDate == "") {
+            alert("结束时间不能为空");
+            return;
+        }
+        if (new Date(endDate).getTime() < new Date().getTime()) {
+            alert("结束时间不能小于现在");
+            return;
+        }
+
+        axios.get("/cardApply/mana/work/whether").then(function (response) {
+            //目前有正在进行的事件
+            if (response.data.status) {
+                alert("目前已有办卡工作，正在进行当中");
+            } else {
+                var url = strConcat("/cardApply/mana/work/addCardWork?","workName=",workName,"&endDate=",endDate);
+                axios.post(url).then(function (respose) {
+                    outMassage(respose);
+                    if (respose.data.status)
+                        getPage("/view/cardApply/mana/workList.html");
+                })
+            }
+        }).catch(serverError);
+
+    }
+
+</script>

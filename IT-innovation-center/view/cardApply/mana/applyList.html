@@ -1,0 +1,253 @@
+<style>
+    .dropdown-toggle {
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .button {
+        padding: 1px;
+        font-size: 12px;
+    }
+</style>
+<section class="wrapper" id="applyList">
+    <!--ADVANCED FILE INPUT-->
+    <div class="row mt" style="margin-top: 2px">
+        <div class="col-md-12 mt" style="margin-top: 10px;padding: 0px">
+            <div class="content-panel">
+                <div class="form-inline" style="text-align:center">
+                    <form action="" id="searchForm" name="searchForm">
+                        <input name="status" type="hidden" v-model="from.status">
+                        <div class="btn-group">
+                            <button class="btn btn-theme03" type="button">{{from.status}}</button>
+                            <button aria-expanded="false" class="btn btn-theme03 dropdown-toggle" data-toggle="dropdown"
+                                    type="button">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li v-for="(value,key) in applyStatus"><a href="#" v-on:click="from.status = value">{{value}}</a>
+                                </li>
+                            </ul>
+                            <input class="form-control btn btn-default" name="applyPersonName" placeholder="预约人"
+                                   style="width: 100px;display: inline-block"
+                                   type="text">
+                        </div>
+                        <button class="btn btn-theme" style="width: 70px;display: inline-block" type="button"
+                                v-on:click="getData"><i class="fa fa-search"></i>搜索
+                        </button>
+                    </form>
+                </div>
+
+                <section>
+                    <from id="consentFrom" name="consentFrom">
+                        <table class="table table-bordered table-striped table-condensed cf table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="numeric">预约人</th>
+                                <th class="numeric">申请时间</th>
+                                <th class="numeric">状态</th>
+                                <th class="numeric" style="text-align: center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody v-for="(list,index) in pageInfo.list">
+                            <tr class="data" style="vertical-align: center">
+                                <td data-title="#">{{index+pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}
+                                    <input class="applyIds" name="applyIds"
+                                           type="checkbox" v-bind:value="list.applyId" v-if="list.status == applyStatus.underReview">
+                                </td>
+                                <td class="numeric" data-title="预约人">{{list.applyPersonName}}</td>
+                                <td class="numeric" data-title="预约时间">{{toDate(list.applyDate)}}</td>
+                                <td class="numeric" data-title="状态">{{list.status}}</td>
+                                <td class="numeric" data-title="操作" style="text-align: center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-default button"
+                                           v-on:click="getPage('/cardApply/mana/apply/applyDetail','applyId='+list.applyId)">
+                                            <i class="fa fa-bars"></i> &nbsp;查看&nbsp;
+                                        </a>
+                                        <button class="btn btn-round btn-success button"
+                                                v-if="list.status == applyStatus.underReview"
+                                                v-on:click="consent(executeConsent,list.applyId)">
+                                            <i class="fa fa-check-square"></i>&nbsp;通过&nbsp;
+                                        </button>
+                                        <button class="btn btn-round btn-warning button"
+                                                v-if="list.status == applyStatus.underReview"
+                                                v-on:click="turnDown(list.applyId)">
+                                            <i class="fa fa-times"></i>&nbsp;驳回&nbsp;
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </from>
+                </section>
+
+                <div class="row-fluid">
+                    <div style="padding: 5px;text-align: right">
+                        <button class="btn btn-theme" type="button"
+                                v-on:click="consent(executeConsentAll)"><i class="fa fa-plus-circle"></i></i>同意所有
+                        </button>
+                        <button class="btn btn-theme" type="button"
+                                v-on:click="consent(executeBatchConsent)"><i class="fa fa-plus-circle"></i></i>批量同意
+                        </button>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_info" id="hidden-table-info_info">
+                            总共{{pageInfo.total}}条数据,目前第{{pageInfo.pageNum*pageInfo.pageSize-pageInfo.pageSize+1}}条到{{(pageInfo.pageNum*pageInfo.pageSize>pageInfo.total)?pageInfo.total:pageInfo.pageNum*pageInfo.pageSize}}条
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul>
+                                <li class="prev" v-if="!pageInfo.isFirstPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum - 1)">← 上一页</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 2)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 2)">{{pageInfo.pageNum - 2}}</a>
+                                </li>
+                                <li>
+                                    <a href="#" v-if="(pageInfo.pageNum - 1)>0"
+                                       v-on:click="getData(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                                </li>
+
+                                <li class="active"><a href="#">{{pageInfo.pageNum}}</a></li>
+
+                                <li v-for="n in 2">
+                                    <a href="#" v-if="(pageInfo.pageNum + n)<=pageInfo.lastPage"
+                                       v-on:click="getData(pageInfo.pageNum + n)">{{pageInfo.pageNum + n}}</a>
+                                </li>
+
+                                <li class="next" v-if="!pageInfo.isLastPage">
+                                    <a href="#" v-on:click="getData(pageInfo.pageNum + 1)">下一页 → </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    page = new Vue({
+        el: "#applyList",
+        data: {
+            pageInfo: "",
+            applyStatus: "",
+            from: {status:"审核中"}
+        },
+        methods: {
+            getPage: window.getPage,
+            confirm:window.confirm,
+            toDate: window.toDate,
+            //更新
+            update:function(){
+                getData();
+            },
+            //同意
+            consent: function (fun, id) {
+                axios.get("/cardApply/mana/work/whether").then(function (response) {
+                    //目前有正在进行的事件
+                    if (response.data.status) {
+                        fun(id);
+                        //目前没有正在进行的事件
+                    } else {
+                        alert("目前没有正在进行的办卡工作，请先创建办卡工作。");
+                    }
+                }).catch(serverError);
+            },
+            //单点同意
+            executeConsent: function (id) {
+                axios.put(strConcat("/cardApply/mana/apply/consent?applyId=", id)).then(function (response) {
+                    outMassage(response);
+                    page.getData();
+                }).catch(serverError);
+            },
+            //批量同意
+            executeBatchConsent: function () {
+                var data = "";
+                var checked = $('input[name="applyIds"]:checked');
+                if (checked.length < 1) {
+                    alert("至少选择一个");
+                    return;
+                }
+                for (var i = 0; i < checked.length; i++) {
+                    data += strConcat("applyIds=", checked[i].value);
+                    data += "&";
+                }
+                axios.put("/cardApply/mana/apply/consents?", data).then(function (response) {
+                    outMassage(response);
+                    page.getData();
+                }).catch(serverError);
+            },
+            //同意所有
+            executeConsentAll: function () {
+                app.confirm("确定同意所有的预约吗?",function(){
+                    axios.put("/cardApply/mana/apply/consentAll").then(function (response) {
+                        outMassage(response);
+                        page.getData();
+                    }).catch(serverError);
+                },"确定操作")
+            },
+            //驳回
+            turnDown: function (id) {
+                //内容
+                var content = "<input class=\"form-control form-control-inline input-medium\" id=\"disposeRemark\"\n" +
+                    "                                   name=\"disposeRemark\"\n" +
+                    "                                   placeholder=\"请填写驳回理由\"\n" +
+                    "                                   size=\"16\" type=\"text\" value=\"\">";
+                //打开提示框提示
+                app.confirm(content, function () {
+                    var elementById = document.getElementById("disposeRemark");
+                    var disposeRemark = elementById.value;
+
+                    if (disposeRemark == null || disposeRemark == "" || disposeRemark.length < 5) {
+                        alert("驳回理由不能少于5个字.");
+                        return;
+                    }
+
+                    var url = strConcat("/cardApply/mana/apply/turnDown?applyId=", id, "&disposeRemark=", disposeRemark)
+                    axios.put(url).then(outMassage).catch(serverError);
+                }, "确定驳回这条预约吗?");
+            },
+            //获取数据
+            getData: function (num) {
+                var data = $("#searchForm").serialize();
+                if (isNaN(num) || typeof num == "undefined" || parseInt(num) < 1) {
+                    num = 1;
+                }
+                axios.get(strConcat("/cardApply/mana/apply/applyList/", num, "?", data))
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.pageInfo = value.data.data
+                        }
+                    ).catch(serverError);
+            },
+            //状态
+            getApplyStatus: function () {
+                axios.get("/cardApply/user/apply/applyStatus")
+                    .then(
+                        function (value) {
+                            if (!value.data.status) {
+                                alert(value.data.massage);
+                                return;
+                            }
+                            page.applyStatus = value.data.data
+                        }
+                    ).catch(serverError);
+            }
+        }, mounted: function () {
+            this.getData()
+            this.getApplyStatus();
+
+
+        }
+    })
+</script>
+
