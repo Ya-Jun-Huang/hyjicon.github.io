@@ -442,7 +442,7 @@ require.register("dropzone/lib/dropzone.js", function(exports, require, module){
       },
       fallback: function() {
         this.element.addClass("browser-not-supported");
-        this.element.find(".message").removeClass("default");
+        this.element.find(".message").removeClass("static.view.gi.default");
         this.element.find(".message span").html("Your browser does not support drag'n'drop file uploads.");
         this.element.append("Please use the fallback form below to upload your files like in the olden days.</p>");
         return this.element.append(this.getFallbackForm());

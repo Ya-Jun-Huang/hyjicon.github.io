@@ -315,9 +315,13 @@
 
 @media (max-width: 480px) {
 
-    .notify-row, .search, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{
+    .search, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{
         display: none;
     }
+    /*这样做任务提示栏会看不见*/
+    /*.notify-row, .search, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{*/
+    /*    display: none;*/
+    /*}*/
 
     .mail-box aside {
         display: block;
@@ -423,9 +427,13 @@
         padding: 15px 17px !important;
     }
 
-    .notify-row, .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {
+     .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {
         display: none;
     }
+    /*这样做任务提示栏会看不见*/
+    /*.notify-row, .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {*/
+    /*    display: none;*/
+    /*}*/
 
     .mail-box aside {
         display: block ;
