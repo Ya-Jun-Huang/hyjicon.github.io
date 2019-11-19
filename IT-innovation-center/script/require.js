@@ -1,18 +1,47 @@
 //信息提示框
-alert = function (msg, label) {
+alert = function (msg, label, type) {
+
+    if (typeof type == "undefined") {
+        type = 1;
+    }
+
     if (typeof label == "undefined") {
-        $("#myModal-Label").text("本站提示！")
-    } else {
-        $("#myModal-Label").text(label);
+        label = "本站提示！";
     }
 
     if (typeof msg == "undefined") {
-        $("#myModal-Msg").text("本站提示！")
-    } else {
-        $("#myModal-Msg").text(msg);
+        msg = "本站提示！";
     }
-    $('#myModal').modal('show');
+
+    switch (type) {
+        case 1:a1(msg, label);break;
+        case 2:a2(msg, label);break;
+    }
+
+    //第一种
+    function a1(msg, label) {
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: label,
+            // (string | mandatory) the text inside the notification
+            text: msg,
+            // (string | optional) the image to display on the left
+            image: 'https://hyjicon.github.io/IT-innovation-center/view/img/logo.png',
+            // (bool | optional) if you want it to fade out on its own or just sit there
+            sticky: false,
+            // (int | optional) the time you want it to be alive for before fading out
+            time: ''
+        });
+    }
+
+    //第二种
+    function a2(msg, label) {
+        $("#myModal-Label").text(label);
+        $("#myModal-Msg").text(msg);
+        $('#myModal').modal('show');
+    }
 }
+
 
 //确定提示框
 confirm = function (msg, fun, label) {
@@ -159,17 +188,17 @@ function userInfo() {
                 app.user = response.data.data;
                 //获取用户事件
                 app.getEvents();
-
+                //加载菜单
                 app.getMenu();
-
                 //如果在钉钉环境下
             } else if (dd.env.platform == "notInDingTalk") {
                 app.alert("等待钉钉授权...");
                 ddLoginDo();
                 //其他登录方式
             } else {
-                app.alert("您还没有登录，请先登录。");
-                app.login();
+                //目前暂时只使用钉钉用户
+                // app.alert("您还没有登录，请先登录。");
+                // app.login();
             }
         }).catch(function (error) {
         // 请求失败处理

@@ -7,7 +7,7 @@ dd.ready(function () {
         corpId: "dingc2f3af5167e8a18a35c2f4657eb6378f",
         onSuccess: function (result) {
             ddCode = result.code;
-            ddLoginDo();
+            userInfo();
         },
         onFail: function (err) {
             alert("dd 出错了" + JSON.stringify(err));
