@@ -30,7 +30,9 @@
 .hyj-footer-mobile .active{
     color: rgb(0,0,0);
 }
-
+.hyj-footer-mobile 。fa{
+    font-size: 15px;
+}
 .hyj-absolute{
     position: absolute;
 }
