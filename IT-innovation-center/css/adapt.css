@@ -1,0 +1,84 @@
+/*//超大屏幕*/
+@media (min-width: 980px) {
+
+    .hyj-menu-icon {
+
+    }
+
+    .hyj-title {
+
+    }
+
+    .hyj-event-hint {
+
+    }
+
+}
+
+/*平板屏幕*/
+@media (min-width: 768px) and (max-width: 979px) {
+    .hyj-menu-icon {
+
+    }
+
+    .hyj-title {
+
+    }
+
+    .hyj-event-hint {
+
+    }
+
+}
+
+/*小平板*/
+@media (max-width: 768px) {
+    .hyj-menu-icon {
+        float: right!important;
+    }
+
+    .hyj-title {
+        position: absolute;
+        left: calc(50% - 48px);
+    }
+
+    .hyj-event-hint {
+        float: left!important;
+    }
+
+}
+
+/*手机*/
+@media (max-width: 480px) {
+
+    .hyj-menu-icon {
+        float: right!important;
+    }
+
+    .hyj-title {
+        position: absolute;
+        left: calc(50% - 48px);
+    }
+
+    .hyj-event-hint {
+        float: left!important;
+    }
+
+}
+
+/*超小手机*/
+@media (max-width: 320px) {
+    .hyj-menu-icon {
+        float: right!important;
+    }
+
+    .hyj-title {
+        position: absolute;
+        left: calc(50% - 48px);
+    }
+
+    .hyj-event-hint {
+        float: left!important;
+
+    }
+}
