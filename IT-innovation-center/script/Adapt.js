@@ -11,6 +11,8 @@ window.adapt = function Adapt() {
     this.onresize = function (ev) {
         //菜单响应
         this.menuAdapt();
+        //设置页头响应
+        this.headerAdapt();
         //设置页脚响应
         this.footerAdapt();
     }
@@ -36,6 +38,19 @@ window.adapt = function Adapt() {
         }
     }
 
+    //设置页脚
+    this.headerAdapt = function () {
+        var windowWidth = window.innerWidth;
+        //如果是手机
+        if (windowWidth < this.w1) {
+            $(".hyj-header-mobile").css("display", "block");
+            $(".hyj-header-pc").css("display", "none");
+            //如果是电脑
+        } else {
+            $(".hyj-header-mobile").css("display", "none");
+            $(".hyj-header-pc").css("display", "block");
+        }
+    }
 
     //设置页脚
     this.footerAdapt = function () {
@@ -50,6 +65,8 @@ window.adapt = function Adapt() {
             $(".hyj-footer-pc").css("display", "block");
         }
     }
+
+
 
 
     //执行一次
