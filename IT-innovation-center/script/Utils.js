@@ -18,16 +18,7 @@ function strConcat() {
     return re;
 }
 
-//获取页面
-function getPage(url, param) {
-    //载体元素
-    var $main = $("#main-content");
-    //获取页面
-    $.get(url, param, function (page) {
-        $main.html(page);
-    })
-}
-
+//
 Date.prototype.format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, //月份
@@ -38,6 +29,7 @@ Date.prototype.format = function (fmt) {
         "q+": Math.floor((this.getMonth() + 3) / 3), //季度
         "S": this.getMilliseconds() //毫秒
     };
+
     if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     }
@@ -48,6 +40,8 @@ Date.prototype.format = function (fmt) {
     }
     return fmt;
 }
+
+
 
 //转换时间
 function toDate(data) {

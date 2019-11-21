@@ -4,7 +4,9 @@ var app = new Vue({
         //用户信息
         user: false,
         //用户事件
-        events: []
+        events: [],
+        //页面加载器
+        pageLoader :window.pageLoader,
     },
     methods: {
         //获取页面
@@ -30,7 +32,6 @@ var app = new Vue({
         //转换时间
         toDate: window.toDate
     }, mounted: function () {
-        this.userInfo();
         this.getPage("/homePage.html");
     }
 })

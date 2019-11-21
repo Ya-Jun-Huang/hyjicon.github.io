@@ -58,7 +58,6 @@ confirm = function (msg, fun, label) {
     } else {
         $("#confirmModal-Msg").html(msg);
     }
-
     document.getElementById("confirmModal-execute").onclick = fun;
     $('#confirmModal').modal('show');
 }
