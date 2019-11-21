@@ -15,12 +15,7 @@ dd.ready(function () {
         corpId: "dingc2f3af5167e8a18a35c2f4657eb6378f",
         onSuccess: function (result) {
             ddCode = result.code;
-            axios.get("/userInfo")
-                .then(function (value) {
-                    if(!value.data.status){
-                        ddLoginDo();
-                    }
-                }).catch(serverError);
+            ddLoginDo();
         },
         onFail: function (err) {
             alert("dd 出错了" + JSON.stringify(err));
