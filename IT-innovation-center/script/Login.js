@@ -7,8 +7,6 @@
 var ddCode = "123";
 
 
-
-
 dd.ready(function () {
     // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
     dd.runtime.permission.requestAuthCode({
@@ -39,15 +37,14 @@ function userInfo() {
                 //加载菜单
                 app.getMenu();
                 //测试环境下
-            } else if (dd.env.platform == "notInDingTalk") {
+            } else if (dd.env.platform != "notInDingTalk") {
                 app.alert("等待钉钉授权...");
                 ddLoginDo();
                 //其他登录方式
             } else {
                 //目前暂时只使用钉钉用户
-                // app.alert("您还没有登录，请先登录。");
-                // app.login();
-
+                app.alert("您还没有登录，请先登录。");
+                app.login();
             }
         }).catch(function (error) {
         // 请求失败处理
@@ -80,11 +77,20 @@ function ddLoginDo() {
 function loginDo() {
     var data = $("#loginForm").serialize();
     var account = document.getElementById("loginForm").account.value;
+    var password = document.getElementById("loginForm").password.value;
     if (account == null || account == "") {
         alert("账号不能为空");
         return;
     }
-    axios.post("/login", data).then(function (data) {
+    if (password == null || password == "") {
+        alert("密码不能为空");
+        return;
+    }
+    axios.post("/login", {
+        account: account,
+        password: password,
+        method: "local",
+    }).then(function (data) {
         if (data.data.status) {
             alert("认证成功")
             app.userInfo();
@@ -95,7 +101,6 @@ function loginDo() {
         alert("登录出错")
     })
 }
-
 
 
 //获取事件
